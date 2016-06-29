@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Login{% endblock %}
+
+{% block body_block %}
+		<h1>Login</h1>
+		{%  if user.is_authenticated %}
+		<p>You are already logged in as {{ user }}<p/>
+		<p><a href="{% url 'index-view' %}">Index</a></p>
+		<p><a href="{% url 'logout-view' %}">Logout</a></p><br />
+		{% else %}
+		{{ error }}
+		<form id="login_form" method="post" action="{% url 'login-view' %}">
+			{% csrf_token %}
+			Username: <input type="text" name="username" value="" size="25" />
+			<br />
+			Password: <input type="password" name="password" value="" size="25"/>
+			<br />
+			
+			<input type="submit" value="Login" />
+		</form>
+		{% endif %}
+		
+{% endblock %}
+		

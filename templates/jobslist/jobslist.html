@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Jobs{% endblock %}
+
+	
+{% block body_block %}
+		<h1>Jobs</h1>
+		{% if jobs %}
+			<table>
+				{% for job in jobs %}
+				<tr>
+				<td>{{ job.updated_date }}  </td>
+				<td><a href="{% url 'job-view' job.employer.slug job.slug %}">{{ job.title }}</a></td>
+				<td><a href="{% url 'employer-view' job.employer.slug %}">{{ job.employer.company_Name }}</a></td>
+				</tr>
+				{% endfor %}
+			</table>
+		{% else %}
+			<strong>There are no jobs present.</strong>
+		{% endif %}
+		
+{% endblock %}
+		
+
+	

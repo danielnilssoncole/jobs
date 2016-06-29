@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Jobs{% endblock %}
+	
+{% block body_block %}
+		<h1>Find a Job</h1>
+		{% if user.is_authenticated %}
+			{% if user.employer %}
+			<h4>Hi {{ user.employer }}, add a job to your account today!</h4>
+			{% else %}
+			<h4>Hi {{ user.username }}, find a job today!</h4>
+			{% endif %}
+		{% endif %}
+		
+		{% if jobs %}
+		<h3>Most Recently Updated Jobs</h3>
+			<table>
+				{% for job in jobs %}
+				<tr>
+				<td><a href="{% url 'job-view' job.employer.slug job.slug %}">{{ job.title }}</a></td>
+				<td><a href="{% url 'employer-view' job.employer.slug %}">{{ job.employer.company_Name }}</a></td>
+				<td>{{ job.updated_date }}  </td>
+				</tr>
+				{% endfor %}
+			</table>
+		{% else %}
+			<strong>There are no jobs present.</strong>
+		{% endif %}
+		
+		{% if employers %}
+		<h3>Top Companies</h3>
+			<ul>
+				{% for employer in employers %}
+				<li><a href="{% url 'employer-view' employer.slug %}">{{ employer.company_Name }}</a></li>
+				{% endfor %}
+			</ul>
+		{% else %}
+			<strong>There are no companies present.</strong>
+		{% endif %}
+		
+		<p>visits: {{ visits }}</p>
+{% endblock %}

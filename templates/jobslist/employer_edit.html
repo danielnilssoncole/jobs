@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Edit {{ emp }}{% endblock %}
+
+	
+{% block body_block %}
+		<h1>Edit {{ emp }}</h1>
+		
+		{% if updated %}
+		<strong>{{ emp }} has been updated!</strong>
+		{% else %}
+		<p>Edit {{ emp }}.</p>
+		
+		<form id="user_form" method="post" action="{% url 'employer_edit-view' user.employer.slug %}"
+				enctype="multipart/form-data">
+				
+			{% csrf_token %}
+			{{ form.as_p }}
+			<input type="submit" name="submit" value="Update" />
+		</form>
+		{% endif %}
+		
+{% endblock %}

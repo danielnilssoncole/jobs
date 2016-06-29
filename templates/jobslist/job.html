@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}{{ title }} | {{ employer_name }}{% endblock %}
+
+	
+{% block body_block %}
+	
+		{% if job %}
+		<h1>{{ employer_name }} - {{ title }}</h1>
+			<p>Company: <a href="{% url 'employer-view' employer_name_slug %}">{{ employer_name }}</a></p>
+			<p>Title: {{ title }} </p>
+			<p>Location: {{ location }} </p>
+			<p>Salary: {{ salary }} </p>
+			<p>Email: {{ email }} </p>
+			<p>Last Updated: {{ updated }} </p>
+			<p>Description: {{ description }}</p>
+			
+			{% if match %}
+			<p><a href="{% url 'job_edit-view' user.employer.slug job_title_slug %}">Edit {{ job }}</a></p>
+			{% endif %}
+			
+			<br />
+			{% if employer %}
+			<h3><a href="{% url 'employer-view' employer_name_slug %}">{{ employer_name }}</a></h3>
+				<p>Field: {{ field }}</p>
+				<p>Headquarters: {{ location }}</p>
+				<p>Size: {{ size }}</p>
+				<p>Website: <a href="{{ website }}" target="blank">{{ website }}</a></p>
+			{% else %}
+				<strong>The specified employer does not exist.</strong>
+			{% endif %}
+		{% else %}
+			This job does not exist.
+		{% endif %}
+		<br />
+		<br />
+		<p><a href="{% url 'employer-view' employer_name_slug %}">More Jobs from {{ employer_name }}</a></p>
+		
+{% endblock %}

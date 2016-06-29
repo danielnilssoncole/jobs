@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}{{ employer_name }} | Add a Job{% endblock %}
+
+	
+{% block body_block %}
+		<h1>Add a Job</h1>
+		<h3>{{ employer_name }}</h3>
+		
+		<form id="job_form" method="post" action="{% url 'add_job-view' employer_name_slug %}">
+		{% csrf_token %}
+		{% for hidden in form.hidden_fields %}
+			{{ hidden }}
+		{% endfor %}
+		
+		{{ form.as_p }}
+		<br />
+		<input type="submit" name="submit" value="Add Job" />
+		</form>
+		
+{% endblock %}

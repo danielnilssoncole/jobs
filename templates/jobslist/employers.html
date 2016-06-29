@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Employers{% endblock %}
+
+	
+{% block body_block %}
+		<h1>Employers</h1>
+		{% if employers %}
+			<table>
+				{% for employer in employers %}
+				<tr>
+				<td><a href="{% url 'employer-view' employer.slug %}">{{ employer.company_Name }}</a></td>
+				<td>{{ employer.field }}</td>
+				<td>{{ employer.location }}  </td>
+				</tr>
+				{% endfor %}
+			</table>
+		{% else %}
+			<strong>There are no employers present.</strong>
+		{% endif %}
+		
+{% endblock %}
+		
