@@ -6,14 +6,14 @@
 {% block body_block %}	
 
 		<h1>Create an Employer Account</h1>
-		{%  if user.is_authenticated %}
+		{%  if user.is_authenticated and not registered %}
 		<p>You are already logged in as {{ user }}<p/>
 		<p><a href="{% url 'index-view' %}">Index</a></p>
 		<p><a href="{% url 'logout-view' %}">Logout</a></p><br />
 		{% else %}
 		
-		{% if registered %}
-		<strong>Thank you for creating an account!</strong>
+		{% if user.is_authenticated and registered %}
+		<strong>Thank you {{ user }} for creating an account!</strong>
 		<p>Now you can add jobs!</p>
 		<br />
 		
