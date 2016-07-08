@@ -21,3 +21,10 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^jobslist/', include('jobslist.urls')),
 ]
+
+if settings.DEBUG:
+	urlpatterns += patterns(
+		'django.views.static',
+		(r'^media/(?P<path>.*)',
+		'serve',
+		{'document_root': settings.MEDIA_ROOT}), )
