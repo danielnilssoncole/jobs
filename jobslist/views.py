@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from jobslist.models import Employer, Job, Applicant
 from jobslist.forms import UserForm, EmployerForm, JobForm, ApplicantForm
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, views as auth_views
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from datetime import datetime
@@ -57,6 +57,7 @@ def employer(request, employer_name_slug):
 	context['size'] = employer.size
 	context['location'] = employer.location
 	context['website'] = employer.website
+	context['picture'] = employer.picture
 	
 	if employer.user == request.user:
 		context['match'] = True
@@ -110,6 +111,10 @@ def employer_register(request):
 			
 			employer = employer_form.save(commit=False)
 			employer.user = user
+			
+			if 'picture' in request.FILES['picture']:
+				employer.picture = request.FILES['picture']
+			
 			employer.save()
 			registered = True
 			u = authenticate(username=username, password=password)
@@ -208,7 +213,13 @@ def employer_edit(request, employer_name_slug):
 	
 	form = EmployerForm(request.POST or None, instance=emp)
 	if form.is_valid():
-		form.save()
+		#form.save()
+		empl = form.save(commit=False)
+		
+		if 'picture' in request.FILES:
+			empl.picture = request.FILES['picture']
+			
+		empl.save()
 		updated = True
 		return employer(request, employer_name_slug)
 	else:
@@ -293,6 +304,15 @@ def employers(request):
 	employers = Employer.objects.order_by('company_Name')
 	context = {'employers': employers}
 	return render(request, 'jobslist/employers.html', context)
+	
+def my_password_change(request):
+	template_response = auth_views.password_change(request, template_name='jobslist/passwordchange.html')
+	return template_response
+	
+def my_password_change_done(request):
+	template_response = auth_views.password_change_done(request, template_name='jobslist/passwordchangedone.html')
+	return template_response
+    
 	
 	
 	

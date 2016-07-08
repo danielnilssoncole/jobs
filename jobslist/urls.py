@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, url
+from django.contrib.auth import views as auth_views
 from jobslist.views import (
 	index,
 	employer,
@@ -12,6 +13,8 @@ from jobslist.views import (
 	job_edit,
 	jobslist,
 	employers,
+	my_password_change,
+	my_password_change_done,
 	)
 	
 urlpatterns = [
@@ -25,6 +28,8 @@ urlpatterns = [
 	url(r'^logout/$', user_logout, name='logout-view'),
 	url(r'^jobs/$', jobslist, name='jobslist-view'),
 	url(r'^employers/$', employers, name='employers-view'),
+	url('^password_change/$', my_password_change, name='password_change-view'),
+	url('^password_change/done/$', my_password_change_done, name='password_change_done'),
 	url(r'^(?P<employer_name_slug>[\w\-]+)/$', employer, name='employer-view'),
 	url(r'^(?P<employer_name_slug>[\w\-]+)/(?P<job_title_slug>[\w\-]+)/$', job, name='job-view'),
 	]
