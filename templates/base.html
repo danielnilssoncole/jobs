@@ -22,6 +22,7 @@
 				<li><a href="{% url 'jobslist-view' %}">Jobs</a></li>
 				<li><a href="{% url 'employers-view' %}">Employers</a></li>
                 <li><a href="{% url 'logout-view' %}">Logout</a></li>
+                <li><a href="{% url 'password_change-view' %}">Change Password</a></li>
             {% else %}
                 <li><a href="{% url 'login-view' %}">Login</a></li>
                 <li><a href="{% url 'applicant_register-view' %}">Create Applicant Account</a></li>
