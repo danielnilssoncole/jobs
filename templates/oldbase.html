@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Jobs | {% block title %}How to Tango with Django!{% endblock %}</title>
+    </head>
+
+    <body>
+    	<div>
+        	{% block body_block %}{% endblock %}
+        </div>
+        
+        <hr />
+        
+        <div>
+        	<ul>
+        		<li><a href="{% url 'index-view' %}">Index</a></li>
+        	{% if user.is_authenticated %}
+        		{% if user.employer %}
+				<li><a href="{% url 'add_job-view' user.employer.slug %}">Add a Job</a></li>
+				<li><a href="{% url 'employer-view' user.employer.slug %}">{{ user.employer }}</a></li>
+				{% endif %}
+				<li><a href="{% url 'jobslist-view' %}">Jobs</a></li>
+				<li><a href="{% url 'employers-view' %}">Employers</a></li>
+                <li><a href="{% url 'logout-view' %}">Logout</a></li>
+                <li><a href="{% url 'password_change-view' %}">Change Password</a></li>
+            {% else %}
+                <li><a href="{% url 'login-view' %}">Login</a></li>
+                <li><a href="{% url 'applicant_register-view' %}">Create Applicant Account</a></li>
+                <li><a href="{% url 'employer_register-view' %}">Create Employer Account</a></li>
+            {% endif %}
+
+                
+            </ul>
+        </div>
+        
+    </body>
+</html>
