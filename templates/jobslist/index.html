@@ -3,21 +3,57 @@
 {% block title %}Jobs{% endblock %}
 	
 {% block body_block %}
-		<h1>Find a Job</h1>
+	<div class="row">
+	<div class="jumbotron">
+      	<div class="container">
+      	
+      	{% if user.is_authenticated %}
+			{% if user.employer %}
+			<h1>Hi {{ user.employer }}!</h1>
+			<p>Post a new job today!</p>
+			{% else %}
+			<h1>Hi {{ user.username }}</h1>
+			<p>Find a job today!</p>
+			{% endif %}
+		{% else %}
+			<h1>Find a Job Today!</h1>
+			<p>Looking for a job? Sign up to view jobs from a wide range of companies, in many different fields.</p>
+			<p class="text-muted">Are you an Employer? Sign up to post jobs.</p>
+		{% endif %}
+      	
+        <p><a class="btn btn-primary btn-lg" href="{% url 'signup-view' %}" role="button">Sign Up!</a></p>
+      </div>
+    </div>
+    </div>
+		
+		
+		<!--<div class="page-header">
 		{% if user.is_authenticated %}
 			{% if user.employer %}
 			<h4>Hi {{ user.employer }}, add a job to your account today!</h4>
 			{% else %}
 			<h4>Hi {{ user.username }}, find a job today!</h4>
 			{% endif %}
+		{% else %}
+			<h2>Find a Job Today!</h2>
 		{% endif %}
+		</div>-->
 		
+		 <div class="col-sm-4 col-sm-offset-4 col-md-10 col-md-offset-1 main">
+		<div class="row">
 		{% if jobs %}
-		<h3>Most Recently Updated Jobs</h3>
-			<table>
+		<h4>Recently Updated Jobs</h4>
+			<table class="table table-hover">
+				<tr>
+					<th>Job Title</th>
+					<th>Location</th>
+					<th>Employer</th>
+					<th>Updated</th>
+				</tr>
 				{% for job in jobs %}
 				<tr>
 				<td><a href="{% url 'job-view' job.employer.slug job.slug %}">{{ job.title }}</a></td>
+				<td>{{ job.location }}  </td>
 				<td><a href="{% url 'employer-view' job.employer.slug %}">{{ job.employer.company_Name }}</a></td>
 				<td>{{ job.updated_date }}  </td>
 				</tr>
@@ -26,8 +62,14 @@
 		{% else %}
 			<strong>There are no jobs present.</strong>
 		{% endif %}
+		</div>
 		
-		{% if employers %}
+		<div class="row">
+		<a href="{% url 'employers-view' %}" class="btn btn-primary" role="button">View Employers</a>
+		</div>
+		</div>
+		
+		<!--{% if employers %}
 		<h3>Top Companies</h3>
 			<ul>
 				{% for employer in employers %}
@@ -36,7 +78,7 @@
 			</ul>
 		{% else %}
 			<strong>There are no companies present.</strong>
-		{% endif %}
+		{% endif %}-->
 		
-		<p>visits: {{ visits }}</p>
+		<!--<p>visits: {{ visits }}</p>-->
 {% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Sign Up!{% endblock %}
+	
+{% block body_block %}
+
+	<div class="page-header">
+		<h1>Applicant or Employer?</h1>
+	</div>
+	
+	<div class="row">
+		<p><a class="btn btn-primary btn-lg btn-block" href="{% url 'applicant_register-view' %}" role="button">Applicant</a></p>
+		<p><a class="btn btn-danger btn-lg btn-block" href="{% url 'employer_register-view' %}" role="button">Employer</a></p>
+	</div>
+
+
+
+
+
+
+{% endblock %}

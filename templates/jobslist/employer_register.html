@@ -1,11 +1,14 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load crispy_forms_tags %}
 {% block title %}Create Employer Account {% endblock %}
 
 	
 {% block body_block %}	
-
+	<div class="page-header">
 		<h1>Create an Employer Account</h1>
+	</div>
+	<div class=" col-md-6 col-md-offset-3 ">
 		{%  if user.is_authenticated and not registered %}
 		<p>You are already logged in as {{ user }}<p/>
 		<p><a href="{% url 'index-view' %}">Index</a></p>
@@ -20,14 +23,21 @@
 		{% else %}
 		<p>Fill out the information below to create your account.</p>
 		
-		<form id="user_form" method="post" action="{% url 'employer_register-view' %}"
+		
+		{% if error %}
+			<p>{{ error }}<p>
+		{% endif %}
+		{% crispy employer_form %}
+	</div>
+		
+		<!--<form id="user_form" method="post" action="{% url 'employer_register-view' %}"
 				enctype="multipart/form-data">
 				
 			{% csrf_token %}
 			{{ user_form.as_p }}
 			{{ employer_form.as_p }}
 			<input type="submit" name="submit" value="Register" />
-		</form>
+		</form>-->
 		{% endif %}
 		{% endif %}
 		

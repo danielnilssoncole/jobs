@@ -3,14 +3,48 @@
 {% block title %}Login{% endblock %}
 
 {% block body_block %}
-		<h1>Login</h1>
+
+<link href="{% static 'bootstrap/signin.css' %}" rel="stylesheet">
+
+
+		
 		{%  if user.is_authenticated %}
 		<p>You are already logged in as {{ user }}<p/>
 		<p><a href="{% url 'index-view' %}">Index</a></p>
 		<p><a href="{% url 'logout-view' %}">Logout</a></p><br />
 		{% else %}
-		{{ error }}
-		<form id="login_form" method="post" action="{% url 'login-view' %}">
+		
+		
+		<br /r>
+		
+	
+		
+	<div class="row">
+		<form id="login_form" class="form-signin" role="form" method="post" action="{% url 'login-view' %}">
+			{% csrf_token %}
+
+			<h2 class="form-signin-heading">Login</h2>
+			{% if error %}
+			<div class="row">
+				<div class="login-error">
+				{{ error }}
+				</div>
+			</div>
+			{% endif %}
+			<input class="form-control" placeholder="Username" id="id_username" maxlength="254" name="username" type="text" required autofocus=""/>
+			<input type="password" class="form-control" placeholder="Password" id="id_password" name="password" required />
+
+			<button class="btn btn-lg btn-primary btn-block" type="submit" value="Submit" >Login</button>
+		</form>
+	</div>
+	
+	
+		
+		<br /r>
+		
+		
+		
+		<!--<form id="login_form" method="post" action="{% url 'login-view' %}">
 			{% csrf_token %}
 			Username: <input type="text" name="username" value="" size="25" />
 			<br />
@@ -18,7 +52,7 @@
 			<br />
 			
 			<input type="submit" value="Login" />
-		</form>
+		</form>-->
 		{% endif %}
 		
 {% endblock %}
