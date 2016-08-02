@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout, views as auth_views
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from datetime import datetime
+from django.contrib.auth.models import User
 
 
 def index(request):
@@ -94,48 +95,99 @@ def job(request, employer_name_slug, job_title_slug):
 	return render(request, 'jobslist/job.html', context)
 	
 
+# def employer_register(request):
+# 	
+# 	registered = False
+# 	
+# 	if request.method == 'POST':
+# 		user_form = UserForm(data=request.POST)
+# 		employer_form = EmployerForm(data=request.POST)
+# 		username = request.POST['username']
+# 		password = request.POST['password']
+# 		
+# 		if user_form.is_valid() and employer_form.is_valid():
+# 			user = user_form.save()
+# 			user.set_password(user.password)
+# 			user.save()
+# 			
+# 			employer = employer_form.save(commit=False)
+# 			employer.user = user
+# 			
+# 			if 'picture' in request.FILES['picture']:
+# 				employer.picture = request.FILES['picture']
+# 			
+# 			employer.save()
+# 			registered = True
+# 			u = authenticate(username=username, password=password)
+# 			
+# 			if u is not None:
+# 				if u.is_active:
+# 					login(request, u)
+# 			
+# 		
+# 		else:
+# 			print user_form.errors, employer_form.errors
+# 	
+# 	else:
+# 		user_form = UserForm()
+# 		employer_form = EmployerForm()
+# 		
+# 	context = {}
+# 	context['user_form'] = user_form
+# 	context['employer_form'] = employer_form
+# 	context['registered'] = registered
+# 		
+# 	return render(request, 'jobslist/employer_register.html', context)
+
+
 def employer_register(request):
 	
+	context = {}
 	registered = False
 	
 	if request.method == 'POST':
-		user_form = UserForm(data=request.POST)
-		employer_form = EmployerForm(data=request.POST)
-		username = request.POST['username']
-		password = request.POST['password']
+		#employer_form = EmployerForm(data=request.POST)
+		employer_form = EmployerForm(request.POST, request.FILES)
 		
-		if user_form.is_valid() and employer_form.is_valid():
-			user = user_form.save()
-			user.set_password(user.password)
-			user.save()
-			
+		if employer_form.is_valid():
 			employer = employer_form.save(commit=False)
-			employer.user = user
+			username = request.POST['username']
+			email = request.POST['email']
+			password = request.POST['password']
 			
-			if 'picture' in request.FILES['picture']:
-				employer.picture = request.FILES['picture']
-			
-			employer.save()
-			registered = True
 			u = authenticate(username=username, password=password)
+			if u is None:
+				user = User.objects.create_user(username, email, password) 
+				user.set_password(password)
+				user.save()
+	
+				employer.user = user
+				
+				if 'picture' in request.FILES.keys():
+					if 'picture' in request.FILES['picture']:
+						employer.picture = request.FILES['picture']
 			
-			if u is not None:
-				if u.is_active:
-					login(request, u)
+				employer.save()
+				registered = True
+				us = authenticate(username=username, password=password)
 			
+				if us is not None:
+					if us.is_active:
+						login(request, us)
+			
+			else:
+				error = 'That username is already taken :('
+				context['error'] = error
 		
 		else:
-			print user_form.errors, employer_form.errors
+			print employer_form.errors
 	
 	else:
-		user_form = UserForm()
 		employer_form = EmployerForm()
 		
-	context = {}
-	context['user_form'] = user_form
 	context['employer_form'] = employer_form
 	context['registered'] = registered
-		
+
 	return render(request, 'jobslist/employer_register.html', context)
 
 @login_required		
@@ -256,40 +308,85 @@ def job_edit(request, employer_name_slug, job_title_slug):
 				'updated': updated,}
 	return render(request, 'jobslist/job_edit.html', context)
 	
+# def applicant_register(request):
+# 	
+# 	registered = False
+# 	
+# 	if request.method == 'POST':
+# 		user_form = UserForm(data=request.POST)
+# 		applicant_form = ApplicantForm(data=request.POST)
+# 		username = request.POST['username']
+# 		password = request.POST['password']
+# 		
+# 		if user_form.is_valid() and applicant_form.is_valid():
+# 			user = user_form.save()
+# 			user.set_password(user.password)
+# 			user.save()
+# 			
+# 			applicant = applicant_form.save(commit=False)
+# 			applicant.user = user
+# 			applicant.save()
+# 			registered = True
+# 			u = authenticate(username=username, password=password)
+# 			
+# 			if u is not None:
+# 				if u.is_active:
+# 					login(request, u)
+# 		
+# 		else:
+# 			print user_form.errors, applicant_form.errors
+# 	
+# 	else:
+# 		user_form = UserForm()
+# 		applicant_form = ApplicantForm()
+# 		
+# 	context = {}
+# 	context['user_form'] = user_form
+# 	context['applicant_form'] = applicant_form
+# 	context['registered'] = registered
+# 		
+# 	return render(request, 'jobslist/applicant_register.html', context)
+	
+
 def applicant_register(request):
 	
+	context = {}
 	registered = False
 	
 	if request.method == 'POST':
-		user_form = UserForm(data=request.POST)
 		applicant_form = ApplicantForm(data=request.POST)
-		username = request.POST['username']
-		password = request.POST['password']
 		
-		if user_form.is_valid() and applicant_form.is_valid():
-			user = user_form.save()
-			user.set_password(user.password)
-			user.save()
-			
+		if applicant_form.is_valid():
 			applicant = applicant_form.save(commit=False)
-			applicant.user = user
-			applicant.save()
-			registered = True
-			u = authenticate(username=username, password=password)
+			username = request.POST['username']
+			email = request.POST['email']
+			password = request.POST['password']
 			
-			if u is not None:
-				if u.is_active:
-					login(request, u)
+			u = authenticate(username=username, password=password)
+			if u is None:
+				user = User.objects.create_user(username, email, password) 
+				user.set_password(password)
+				user.save()
+			
+				applicant.user = user
+				applicant.save()
+				registered = True
+				us = authenticate(username=username, password=password)
+			
+				if us is not None:
+					if us.is_active:
+						login(request, us)
+						
+			else:
+				error = 'That username is already taken :('
+				context['error'] = error
 		
 		else:
-			print user_form.errors, applicant_form.errors
+			print applicant_form.errors
 	
 	else:
-		user_form = UserForm()
 		applicant_form = ApplicantForm()
 		
-	context = {}
-	context['user_form'] = user_form
 	context['applicant_form'] = applicant_form
 	context['registered'] = registered
 		
@@ -312,6 +409,10 @@ def my_password_change(request):
 def my_password_change_done(request):
 	template_response = auth_views.password_change_done(request, template_name='jobslist/passwordchangedone.html')
 	return template_response
+	
+def signup(request):
+	context = {}
+	return render(request, 'jobslist/signup.html', context)
     
 	
 	

@@ -15,12 +15,14 @@ from jobslist.views import (
 	employers,
 	my_password_change,
 	my_password_change_done,
+	signup,
 	)
 	
 urlpatterns = [
 	url(r'^$', index, name='index-view'),
 	url(r'^edit/employer/(?P<employer_name_slug>[\w\-]+)/$', employer_edit, name='employer_edit-view'),
 	url(r'^edit/job/(?P<employer_name_slug>[\w\-]+)/(?P<job_title_slug>[\w\-]+)/$', job_edit, name='job_edit-view'),
+	url(r'^signup/$', signup, name='signup-view'),
 	url(r'^register/employer/$', employer_register, name='employer_register-view'),
 	url(r'^register/applicant/$', applicant_register, name='applicant_register-view'),
 	url(r'^addjob/(?P<employer_name_slug>[\w\-]+)/$', add_job, name='add_job-view'),

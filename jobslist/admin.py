@@ -2,7 +2,7 @@ from django.contrib import admin
 from jobslist.models import Employer, Job, Applicant
 
 class EmployerAdmin(admin.ModelAdmin):
-	list_display = ('company_Name', 'field', 'location', 'website')
+	list_display = ('company_Name', 'field', 'location', 'website', 'picture')
 
 class JobAdmin(admin.ModelAdmin):
 	list_display = ('title', 'employer', 'location', 'salary', 'updated_datetime', 'pub_datetime')

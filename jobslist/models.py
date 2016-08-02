@@ -14,6 +14,7 @@ class Employer(models.Model):
 	location = models.CharField(max_length=255, null=True)
 	website = models.URLField(blank=True)
 	contact = models.EmailField(max_length=255, null=True)
+	picture = models.ImageField(upload_to='profile_images', blank=True)
 	slug = models.SlugField()
 	
 	def save(self, *args, **kwargs):
@@ -48,6 +49,7 @@ class Applicant(models.Model):
 	first_name = models.CharField(max_length=255, null=True)
 	last_name = models.CharField(max_length=255, null=True)
 	location = models.CharField(max_length=255, null=True)
+	#picture = models.ImageField(upload_to='profile_images', blank=True)
 	#slug = models.SlugField()
 	
 	# def save(self, *args, **kwargs):
